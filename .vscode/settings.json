@@ -1,0 +1,6 @@
+{
+    "intelephense.diagnostics.unusedSymbols": true,
+    "editor.codeActionsOnSave": {
+        "source.removeUnusedImports": true
+    }
+}
