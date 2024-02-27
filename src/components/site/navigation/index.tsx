@@ -11,7 +11,7 @@ type NavigationProps = {
 
 const Navigation: React.FC<NavigationProps> = ({ user }) => {
   return (
-    <div className="flex justify-between items-center p-4 relative">
+    <div className="flex justify-between items-center p-4 fixed left-0 top-0 right-0 z-10">
       <aside className="flex items-center gap-2">
         <Image
           src="/assets/plura-logo.svg"
@@ -31,7 +31,7 @@ const Navigation: React.FC<NavigationProps> = ({ user }) => {
       </nav>
       <aside className="flex justify-center items-center gap-2">
         <Link
-          href={"/ageny"}
+          href={"/agency"}
           className="bg-primary text-white p-2 px-4 rounded-md hover:bg-primary/80"
         >
           Login
