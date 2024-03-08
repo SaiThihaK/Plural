@@ -23,7 +23,6 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-
 import * as z from "zod";
 import {
   Form,
@@ -43,9 +42,11 @@ import {
   initUser,
   saveActivityLogsNotification,
   updateAgencyDetail,
+  upsertAgency,
 } from "@/lib/queries";
 import { Button } from "../ui/button";
 import Loading from "../global/loading";
+import { v4 } from "uuid";
 type Props = {
   data?: Partial<Agency>;
 };
@@ -92,14 +93,23 @@ const AgencyDetail = ({ data }: Props) => {
     }
   }, [data]);
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
-    if (!data?.id) return;
-    try {
-      let newUserData;
-      let customerId;
-      const bodyData = {
-        email: values.companyEmail,
-        name: values.name,
-        shipping: {
+    if (!data?.id) {
+      try {
+        let newUserData;
+        let custId;
+        const bodyData = {
+          email: values.companyEmail,
+          name: values.name,
+          shipping: {
+            address: {
+              city: values.city,
+              country: values.country,
+              line1: values.address,
+              postal_code: values.zipCode,
+              state: values.zipCode,
+            },
+            name: values.name,
+          },
           address: {
             city: values.city,
             country: values.country,
@@ -107,18 +117,40 @@ const AgencyDetail = ({ data }: Props) => {
             postal_code: values.zipCode,
             state: values.zipCode,
           },
-          name: values.name,
-        },
-        address: {
-          city: values.city,
-          country: values.country,
-          line1: values.address,
-          postal_code: values.zipCode,
-          state: values.zipCode,
-        },
-      };
-      newUserData = await initUser({ role: "AGENCY_OWNER" });
-    } catch (error) {}
+        };
+        newUserData = await initUser({ role: "AGENCY_OWNER" });
+        if (!data?.id) {
+          await upsertAgency({
+            id: data?.id ? data.id : v4(),
+            address: values.address,
+            agencyLogo: values.agencyLogo,
+            city: values.city,
+            companyPhone: values.companyPhone,
+            country: values.country,
+            name: values.name,
+            state: values.state,
+            whiteLabel: values.whiteLabel,
+            zipCode: values.zipCode,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            companyEmail: values.companyEmail,
+            connectAccountId: "",
+            goal: 5,
+          });
+          toast({
+            title: "Created Agency",
+          });
+          return router.refresh();
+        }
+      } catch (error) {
+        console.log(error);
+        toast({
+          variant: "destructive",
+          title: "Oppse!",
+          description: "could not create your agency",
+        });
+      }
+    }
   };
 
   const handleDeleteAgency = async () => {
@@ -355,7 +387,7 @@ const AgencyDetail = ({ data }: Props) => {
                   </FormItem>
                 )}
               />
-              {!data?.id && (
+              {data?.id && (
                 <div className="flex flex-col gap-2">
                   <FormLabel>Agency Goal</FormLabel>
                   <FormDescription>
@@ -386,7 +418,7 @@ const AgencyDetail = ({ data }: Props) => {
               </Button>
             </form>
           </Form>
-          {!data?.id && (
+          {data?.id && (
             <div className="flex flex-row gap-4 justify-between items-center rounded-lg border p-4 mt-4">
               <div>Danger Zone</div>
               <div className="text-muted-foreground">

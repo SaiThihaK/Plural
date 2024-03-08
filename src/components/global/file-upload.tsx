@@ -13,14 +13,14 @@ export default function FileUpalod({ value, apiEndpoint, onChange }: Props) {
   const type = value?.split(".").pop();
   if (value)
     return (
-      <div>
+      <div className="flex flex-col justify-center items-center">
         {type !== "pdf" ? (
           <div className="w-40 h-40 relative">
             <Image
               alt="uploaded Image"
               src={value}
               fill
-              className="object-fit"
+              className="object-contain"
             />
           </div>
         ) : (
