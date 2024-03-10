@@ -1,3 +1,4 @@
+import ModalProvider from "@/provider/modal-provider";
 import { ThemeProvider } from "@/provider/theme-provider";
 
 import type { Metadata } from "next";
@@ -25,7 +26,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}{" "}
+          <ModalProvider>{children}</ModalProvider>
         </ThemeProvider>
       </body>
     </html>
