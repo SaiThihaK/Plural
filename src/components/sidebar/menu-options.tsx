@@ -1,6 +1,7 @@
 "use client";
 import { useModal } from "@/provider/modal-provider";
 import {
+  Agency,
   AgencySidebarOption,
   SubAccount,
   SubAccountSidebarOption,
@@ -11,6 +12,7 @@ import { ChevronsUpDown, Compass, Menu, PlusCircleIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import SubAccountDetails from "../forms/subaccount-detail";
 import CustomModal from "../global/custom-modal";
 import { Button } from "../ui/button";
 import {
@@ -227,7 +229,11 @@ const MenuOptions: React.FC<Props> = ({
                             subheading="You can switch between your agency account and the subaccount from the sidebar"
                             defaultOpen={false}
                           >
-                            ge
+                            <SubAccountDetails
+                              userId={user?.id as string}
+                              agencyDetails={user.Agency as Agency}
+                              userName={user?.name as string}
+                            />
                           </CustomModal>
                         );
                       }}
