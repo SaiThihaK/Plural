@@ -1,4 +1,5 @@
 "use client";
+import { icons } from "@/lib/constants";
 import { useModal } from "@/provider/modal-provider";
 import {
   Agency,
@@ -7,6 +8,7 @@ import {
   SubAccountSidebarOption,
 } from "@prisma/client";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
+
 import clsx from "clsx";
 import { ChevronsUpDown, Compass, Menu, PlusCircleIcon } from "lucide-react";
 import Image from "next/image";
@@ -24,6 +26,7 @@ import {
   CommandList,
 } from "../ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Separator } from "../ui/separator";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "../ui/sheet";
 
 type Props = {
@@ -246,6 +249,38 @@ const MenuOptions: React.FC<Props> = ({
               </Command>
             </PopoverContent>
           </Popover>
+          <p className="text-muted-foreground text-xs mb-2">MENU LINKS</p>
+          <Separator className="mb-4" />
+          <nav className="relative">
+            <Command>
+              <CommandInput placeholder="...search" />
+              <CommandList className="overflow-visible rounded-lg bg-transparent">
+                <CommandEmpty>No Items</CommandEmpty>
+                <CommandGroup className="overflow-visible my-4">
+                  {sidebarOpt.map((opt) => {
+                    let val;
+                    const result = icons.find(
+                      (icon) => icon.value === opt.icon
+                    );
+                    if (result) {
+                      val = <result.path />;
+                    }
+                    return (
+                      <CommandItem key={opt.id} className="md:w-[320px] w-full">
+                        <Link
+                          href={opt.link}
+                          className="flex items-center gap-2 hover:bg-transparent rounded-md transition-all md:w-full w-[320px]"
+                        >
+                          {val}
+                          {opt.name}
+                        </Link>
+                      </CommandItem>
+                    );
+                  })}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </nav>
         </div>
       </SheetContent>
     </Sheet>

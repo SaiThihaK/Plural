@@ -49,7 +49,7 @@ const sheetVariants = cva(
   }
 );
 interface CustomSheetProps {
-  showX: boolean;
+  showX?: boolean;
 }
 interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
