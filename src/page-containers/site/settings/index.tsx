@@ -1,3 +1,5 @@
+import AgencyDetail from "@/components/forms/agency-detail";
+import UserDetails from "@/components/forms/user-detail";
 import { db } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs";
 
@@ -15,7 +17,7 @@ const SettingPage = async ({ agencyId }: Props) => {
   });
   if (!userDetails) return null;
 
-  const agencyDetails = await db.agency.findUnique({
+  const agencyDetails = await db.agency.findFirst({
     where: {
       id: agencyId,
     },
@@ -23,7 +25,17 @@ const SettingPage = async ({ agencyId }: Props) => {
   });
 
   if (!agencyDetails) return null;
-  return <div>SettingPage</div>;
+  return (
+    <div className="flex flex-col  gap-4">
+      <AgencyDetail data={agencyDetails} />
+      <UserDetails
+        type="agency"
+        userData={userDetails}
+        id={agencyId}
+        subAccount={agencyDetails.SubAccount}
+      />
+    </div>
+  );
 };
 
 export default SettingPage;
