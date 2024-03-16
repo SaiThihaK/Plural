@@ -176,7 +176,7 @@ const AgencyDetail = ({ data }: Props) => {
     <AlertDialog>
       <Card className="w-full">
         <CardHeader>
-          <CardTitle> Card Information</CardTitle>
+          <CardTitle> Agency Information</CardTitle>
           <CardDescription>
             {" "}
             Lets create an agency for you business. You can edit agency settings
@@ -283,7 +283,10 @@ const AgencyDetail = ({ data }: Props) => {
                     </div>
 
                     <FormControl>
-                      <Switch checked={field.value} onChange={field.onChange} />
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
